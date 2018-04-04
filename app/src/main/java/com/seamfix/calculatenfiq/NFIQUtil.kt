@@ -8,16 +8,25 @@ class NFIQUtil {
 
     companion object {
 
+        //Loads the required native libraries.
+        init {
+            System.loadLibrary("log")
+            System.loadLibrary("nativelib")
+        }
+
         @JvmStatic
-        val nfiqUtil = NFIQUtil()
+        private val nfiqUtil = NFIQUtil()
 
         /**
-         * This method calculates the nfiq of a fingerprint.
+         * This method calculates the nfiq of a fingerprint. <br/>
+         *
+         * This method should be called in an async manner since it might take a few seconds to return
          *
          * @param rawBytes The byte array that contains the captured fingerprint.
          * @param imageWidth The width of the captured finger print image.
          * @param imageHeight The height of the captured finger print image.
          *
+         * @return the NFIQ for the supplied fingerprint.
          */
         @JvmStatic
         fun calculateNFIQUsingRawBytes(rawBytes: ByteArray, imageWidth: Int, imageHeight: Int): Int {
