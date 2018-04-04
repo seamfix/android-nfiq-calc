@@ -1,0 +1,5 @@
+ fing2pat - Takes a list of grayscale fingerprint images, and for
+            each image, computes a feature vector for use by the
+            NFIQ algorithm for MLP training.  If the optional file
+            is passed using the "-z" flag, then the output feature
+            vectors are ZNormalized.

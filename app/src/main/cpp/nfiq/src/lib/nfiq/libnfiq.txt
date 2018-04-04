@@ -1,0 +1,20 @@
+ comp_nfiq_featvctr - Routine takes results from NIST's Mindtct and
+                      computes a feature vector for computing NFIQ
+ comp_nfiq - Routine computes NFIQ given an input image.
+             This routine uses default statistics for Z-Normalization
+             and default weights for MLP classification.
+ comp_nfiq_flex - Routine computes NFIQ given an input image.
+             This routine requires statistics for Z-Normalization
+             and weights for MLP classification.
+ read_imgcls_file - Routine opens a column-formatted text file
+                    parsing in the first column of filenames as a
+                    list of strings and the second column of
+                    target image qualities as a list of strings.
+ read_znorm_file - Routine opens a column-formatted text file
+                   parsing in the first column of mean values as a
+                   list of floats and the second column of stddev
+                   values as a list of floats.
+ znorm_fniq_featvctr - Routine Z-Normalized an NFIQ feature vector
+ comp_znorm_stats - Routine takes a list of feature vectors
+             (a matrix) and computes the mean and stddev for each
+             column of features coefs in the matrix.

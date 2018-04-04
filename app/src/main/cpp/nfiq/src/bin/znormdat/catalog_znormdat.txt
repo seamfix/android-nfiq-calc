@@ -1,0 +1,4 @@
+ znormdat - Takes patterns file of (un-normalized) feature vectors,
+            and foreach coefficient position across the vectors,
+            computes the mean and stddev, writing these statistics
+            out to support ZNormalization.
