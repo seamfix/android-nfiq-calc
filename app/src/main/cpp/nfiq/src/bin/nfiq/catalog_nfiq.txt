@@ -1,0 +1,4 @@
+ nfiq - Takes a grayscale fingerprint image and computes an
+        image quality value based on the NFIQ algorithm.
+        This program will automatically process
+        ANSI/NIST, WSQ, JPEGB, JPEGL, IHead and raw image formats
