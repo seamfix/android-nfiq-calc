@@ -1,5 +1,11 @@
 #include <jni.h>
 #include <nfiq.h>
+/**
+ * @author Ben Daniel.
+ *
+ * This is the JNI bridge that computes the NFIQ of a given image using the open source C library: https://github.com/lessandro/nbis
+ */
+
 
 unsigned char *as_unsigned_char_array(JNIEnv *env, jbyteArray array) {
     int len = (*env)->GetArrayLength(env, array);
