@@ -260,7 +260,6 @@ int gen_initial_maps(int **odmap, int **olcmap, int **olfmap,
    int xminlimit, xmaxlimit, yminlimit, ymaxlimit;
    int win_x, win_y, low_contrast_offset;
 
-   print2log("INITIAL MAP\n");
 
    /* Compute total number of blocks in map */
    bsize = mw * mh;
@@ -347,7 +346,6 @@ int gen_initial_maps(int **odmap, int **olcmap, int **olfmap,
       win_y = min(ymaxlimit, win_y);
       low_contrast_offset = (win_y * pw) + win_x;
 
-      print2log("   BLOCK %2d (%2d, %2d) ", bi, bi%mw, bi/mw);
 
       /* If block is low contrast ... */
       if((ret = low_contrast_block(low_contrast_offset, lfsparms->windowsize,
@@ -366,13 +364,11 @@ int gen_initial_maps(int **odmap, int **olcmap, int **olfmap,
          }
 
          /* Otherwise, block is low contrast ... */
-         print2log("LOW CONTRAST\n");
          low_contrast_map[bi] = TRUE;
          /* Direction Map's block is already set to INVALID. */
       }
       /* Otherwise, sufficient contrast for DFT processing ... */
       else {
-         print2log("\n");
 
          /* Compute DFT powers */
          if((ret = dft_dir_powers(powers, pdata, low_contrast_offset, pw, ph,
@@ -490,7 +486,6 @@ int interpolate_direction_map(int *direction_map, int *low_contrast_map,
    int *omap, *dptr, *cptr, *optr;
    double avr_dir;
 
-   print2log("INTERPOLATE DIRECTION MAP\n");
 
    /* Allocate output (interpolated) Direction Map. */
    omap = (int *)malloc(mw*mh*sizeof(int));
@@ -613,8 +608,7 @@ int interpolate_direction_map(int *direction_map, int *low_contrast_map,
                /* Assign interpolated direction to output Direction Map. */
                new_dir = sround(avr_dir);
 
-               print2log("   Block %d,%d INTERP numnbs=%d newdir=%d\n",
-                       x, y, total_found, new_dir);
+
 
                *optr = new_dir;
             }
@@ -789,7 +783,6 @@ void smooth_direction_map(int *direction_map, int *low_contrast_map,
    int avrdir, nvalid;
    double dir_strength;
 
-   print2log("SMOOTH DIRECTION MAP\n");
 
    /* Assign pointers to beginning of both maps. */
    dptr = direction_map;
@@ -1057,7 +1050,6 @@ int gen_initial_imap(int **optr, int *blkoffs, const int mw, const int mh,
    int nstats;
    int ret; /* return code */
 
-   print2log("INITIAL MAP\n");
 
    /* Compute total number of blocks in IMAP */
    bsize = mw * mh;
@@ -1094,7 +1086,6 @@ int gen_initial_imap(int **optr, int *blkoffs, const int mw, const int mh,
    /* Foreach block in imap ... */
    for(bi = 0; bi < bsize; bi++){
 
-      print2log("   BLOCK %2d (%2d, %2d)\n", bi, bi%mw, bi/mw);
 
       /* Compute DFT powers */
       if((ret = dft_dir_powers(powers, pdata, blkoffs[bi], pw, ph,
@@ -1192,7 +1183,6 @@ int primary_dir_test(double **powers, const int *wis,
 {
    int w;
 
-   print2log("      Primary\n");
 
    /* Look at max power statistics in decreasing order ... */
    for(w = 0; w < nstats; w++){
@@ -1322,8 +1312,7 @@ int secondary_fork_test(double **powers, const int *wis,
       ldir = (powmax_dirs[wis[0]] + lfsparms->num_directions -
                  lfsparms->fork_interval) % lfsparms->num_directions;
 
-      print2log("         Left = %d, Current = %d, Right = %d\n",
-              ldir, powmax_dirs[wis[0]], rdir);
+
 
       /* Set forked angle threshold to be a % of the max directional */
       /* power. (Ex. thresh==0.7*powmax)                             */
@@ -2116,7 +2105,6 @@ void smooth_imap(int *imap, const int mw, const int mh,
    int avrdir, nvalid;
    double dir_strength;
 
-   print2log("SMOOTH MAP\n");
 
    iptr = imap;
    for(my = 0; my < mh; my++){

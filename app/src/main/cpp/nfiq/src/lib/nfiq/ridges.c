@@ -97,7 +97,6 @@ int count_minutiae_ridges(MINUTIAE *minutiae,
    int ret;
    int i;
 
-   print2log("\nFINDING NBRS AND COUNTING RIDGES:\n");
 
    /* Sort minutia points on x then y (column-oriented). */
    if((ret = sort_minutiae_x_y(minutiae, iw, ih))){
@@ -154,8 +153,6 @@ int count_minutia_ridges(const int first, MINUTIAE *minutiae,
       return(ret);
    }
 
-   print2log("NBRS FOUND: %d,%d = %d\n", minutiae->list[first]->x,
-              minutiae->list[first]->y, nnbrs);
 
    /* If no neighors found ... */
    if(nnbrs == 0){
@@ -602,8 +599,7 @@ int ridge_count(const int first, const int second, MINUTIAE *minutiae,
    /* Ready to count ridges, so initialize counter to 0. */
    ridge_count = 0;
 
-   print2log("RIDGE COUNT: %d,%d to %d,%d ", minutia1->x, minutia1->y,
-                                               minutia2->x, minutia2->y);
+
 
    /* While not at the end of the trajectory ... */
    while(i < num){
@@ -613,7 +609,6 @@ int ridge_count(const int first, const int second, MINUTIAE *minutiae,
          free(xlist);
          free(ylist);
 
-         print2log("\n");
 
          /* Return number of ridges counted to this point. */
          return(ridge_count);
@@ -622,7 +617,6 @@ int ridge_count(const int first, const int second, MINUTIAE *minutiae,
       /* its location (the location of the 1 in 0-to-1 transition). */
       ridge_start = i;
 
-      print2log(": RS %d,%d ", xlist[i], ylist[i]);
 
       /* If 1-to-0 transition not found ... */
       if(!find_transition(&i, 1, 0, xlist, ylist, num, bdata, iw, ih)){
@@ -630,7 +624,6 @@ int ridge_count(const int first, const int second, MINUTIAE *minutiae,
          free(xlist);
          free(ylist);
 
-         print2log("\n");
 
          /* Return number of ridges counted to this point. */
          return(ridge_count);
@@ -639,7 +632,6 @@ int ridge_count(const int first, const int second, MINUTIAE *minutiae,
       /* its location (the location of the 0 in 1-to-0 transition). */
       ridge_end = i;
 
-      print2log("; RE %d,%d ", xlist[i], ylist[i]);
 
       /* Conduct the validation, tracing the contour of the ridge  */
       /* from the ridge ending point a specified number of steps   */
@@ -660,7 +652,6 @@ int ridge_count(const int first, const int second, MINUTIAE *minutiae,
          return(ret);
       }
 
-      print2log("; V%d ", ret);
 
       /* If validation result is TRUE ... */
       if(ret){
@@ -677,7 +668,6 @@ int ridge_count(const int first, const int second, MINUTIAE *minutiae,
    free(xlist);
    free(ylist);
 
-   print2log("\n");
 
    /* Return the number of ridges counted. */
    return(ridge_count);

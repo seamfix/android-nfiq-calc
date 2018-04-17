@@ -104,7 +104,6 @@ int link_minutiae(MINUTIAE *minutiae,
    int main_x, main_y;
    int *link_table, *x_axis, *y_axis, nx_axis, ny_axis, n_entries;
 
-   print2log("\nLINKING MINUTIA:\n");
 
    /* Go through the list of minutiae and detect any small loops (ex. */
    /* < 15 pixels in circumference), and remove any minutiae          */
@@ -327,8 +326,6 @@ int create_link_table(int **olink_table, int **ox_axis, int **oy_axis,
    /* Set "main" minutia inqueue flag to TRUE. */
    inqueue[start] = TRUE;
 
-   print2log("BUILD TABLE:\n");
-
    /* While the queue is NOT empty ... */
    while(head != tail){
       /* Pop the next manutia point from the queue and refer to it as */
@@ -349,15 +346,11 @@ int create_link_table(int **olink_table, int **ox_axis, int **oy_axis,
          /* Assign second minutia to temporary pointer. */
          minutia2 = minutiae->list[second];
 
-         print2log("1:%d(%d,%d)%d 2:%d(%d,%d)%d ",
-                   first, minutia1->x, minutia1->y, minutia1->type,
-                   second, minutia2->x, minutia2->y, minutia2->type);
 
          /* 1. If y-delta from second to first minutia is small (ex. */
          /*    <= 20 pixels) ...                                     */
          if((minutia2->y - minutia1->y) <= lfsparms->max_link_dist){
 
-            print2log("1DY ");
 
 
             /* 2. If first and second minutia are not the same point ... */
@@ -365,24 +358,20 @@ int create_link_table(int **olink_table, int **ox_axis, int **oy_axis,
             /*    all the way back to the starting "main" minutia.)      */
             if(first != second){
 
-               print2log("2NE ");
 
                /* 3. If first and second minutia are the same type ...    */
                if(minutia1->type == minutia2->type){
 
-                  print2log("3TP ");
 
                   /* 4. If |x-delta| between minutiae is small (ex. <= */
                   /*    20 pixels) ...                                 */
                   if(abs(minutia1->x - minutia2->x) <=
                          lfsparms->max_link_dist){
 
-                     print2log("4DX ");
 
                      /* 5. If second minutia is NOT on a small loop ... */
                      if(!onloop[second]){
 
-                        print2log("5NL ");
 
                         /* The second minutia is ridge-ending OR a */
                         /* bifurcation NOT to be skipped ...       */
@@ -426,7 +415,6 @@ int create_link_table(int **olink_table, int **ox_axis, int **oy_axis,
                            ((nmapval == HIGH_CURVATURE) &&
                             (deltadir >= qtr_ndirs))){
 
-                           print2log("6DA ");
 
                            /* Then compute direction of "joining" vector. */
                            /* First, compute direction of line from first */
@@ -446,7 +434,6 @@ int create_link_table(int **olink_table, int **ox_axis, int **oy_axis,
                            /* 7. If join angle is <= 90 deg... */
                            if(joindir <= half_ndirs){
 
-                              print2log("7JA ");
 
                               /* Convert integer join direction to angle  */
                               /* in radians on full circle.  Multiply     */
@@ -462,7 +449,6 @@ int create_link_table(int **olink_table, int **ox_axis, int **oy_axis,
                               /*    (ex. thresh == 20 pixels)...             */
                               if(joindist <= lfsparms->max_link_dist){
 
-                                 print2log("8JD ");
 
                                  /* 9. Does a "free path" exist between the */
                                  /*    2 minutia points?                    */
@@ -470,7 +456,6 @@ int create_link_table(int **olink_table, int **ox_axis, int **oy_axis,
                                               minutia2->x, minutia2->y,
                                               bdata, iw, ih, lfsparms)){
 
-                                    print2log("9FP ");
 
                                     /* If the join distance is very small,   */
                                     /* join theta will be unreliable, so set */
@@ -493,7 +478,6 @@ int create_link_table(int **olink_table, int **ox_axis, int **oy_axis,
                                     /* to the Link Table.                    */
 
                                     if(iscore > 0){
-                                       print2log("UPDATE");
 
                                        if((ret = update_link_table(link_table,
                                           x_axis, y_axis, &nx_axis, &ny_axis,
@@ -523,7 +507,6 @@ int create_link_table(int **olink_table, int **ox_axis, int **oy_axis,
             /* If we get here, we want to advance to the next secondary. */
             second++;
 
-            print2log("\n");
 
 
          }
@@ -533,7 +516,6 @@ int create_link_table(int **olink_table, int **ox_axis, int **oy_axis,
          /*    secondaries to it.                                          */
          else{
 
-            print2log("\n");
 
             /* So, break out of the secondary minutiae while loop. */
             break;
@@ -1001,7 +983,6 @@ int process_link_table(const int *link_table,
    int max_v, max_tbl_i, max_line_i, max_x, max_y;
 
 
-   print2log("LINKING FROM TABLE:\n");
 
    /* If link table is empty, just return normally. */
    if(n_entries == 0)
@@ -1140,8 +1121,6 @@ int process_link_table(const int *link_table,
          free_path(minutia1->x, minutia1->y, minutia2->x, minutia2->y,
                    bdata, iw, ih, lfsparms)){
 
-         print2log("%d,%d to %d,%d LINK\n",
-                    minutia1->x, minutia1->y, minutia2->x, minutia2->y);
 
          /* Join the minutia pair in the image. */
          if((ret = join_minutia(minutia1, minutia2, bdata, iw, ih,

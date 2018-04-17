@@ -117,10 +117,6 @@ int lfs_detect_minutiae(MINUTIAE **ominutiae,
    /* INITIALIZATION */
    /******************/
 
-   /* If LOG_REPORT defined, open log report file. */
-   if((ret = open_logfile()))
-      /* If system error, exit with error code. */
-      return(ret);
 
    /* Determine the maximum amount of image padding required to support */
    /* LFS processes.                                                    */
@@ -189,7 +185,6 @@ int lfs_detect_minutiae(MINUTIAE **ominutiae,
    /* could not get this work upon first attempt.            */
    bits_8to6(pdata, pw, ph);
 
-   print2log("\nINITIALIZATION AND PADDING DONE\n");
 
    /******************/
    /*      IMAP      */
@@ -211,7 +206,6 @@ int lfs_detect_minutiae(MINUTIAE **ominutiae,
    free_dftwaves(dftwaves);
    free_rotgrids(dftgrids);
 
-   print2log("\nIMAP DONE\n");
 
    /* Generate NMAP from the IMAP of the input image. */
    if((ret = gen_nmap(&nmap, imap, mw, mh, lfsparms))){
@@ -221,7 +215,6 @@ int lfs_detect_minutiae(MINUTIAE **ominutiae,
       return(ret);
    }
 
-   print2log("\nNMAP DONE\n");
 
    time_accum(imap_timer, imap_time);
 
@@ -269,7 +262,6 @@ int lfs_detect_minutiae(MINUTIAE **ominutiae,
       return(-431);
    }
 
-   print2log("\nBINARIZATION DONE\n");
 
    time_accum(bin_timer, bin_time);
 
@@ -313,8 +305,6 @@ int lfs_detect_minutiae(MINUTIAE **ominutiae,
       return(ret);
    }
 
-   print2log("\nMINUTIA DETECTION DONE\n");
-
    time_accum(rm_minutia_timer, rm_minutia_time);
 
    /******************/
@@ -332,8 +322,6 @@ int lfs_detect_minutiae(MINUTIAE **ominutiae,
       return(ret);
    }
 
-
-   print2log("\nNEIGHBOR RIDGE COUNT DONE\n");
 
    time_accum(ridge_count_timer, ridge_count_time);
 
@@ -380,9 +368,6 @@ int lfs_detect_minutiae(MINUTIAE **ominutiae,
    /* print total timing statistics */
    print_time(stderr, "TIMER: Total time   = %f (secs)\n", total_time);
 
-   /* If LOG_REPORT defined, close log report file. */
-   if((ret = close_logfile()))
-      return(ret);
 
    return(0);
 }
@@ -447,10 +432,6 @@ int lfs_detect_minutiae_V2(MINUTIAE **ominutiae,
    /* INITIALIZATION */
    /******************/
 
-   /* If LOG_REPORT defined, open log report file. */
-   if((ret = open_logfile()))
-      /* If system error, exit with error code. */
-      return(ret);
 
    /* Determine the maximum amount of image padding required to support */
    /* LFS processes.                                                    */
@@ -520,7 +501,6 @@ int lfs_detect_minutiae_V2(MINUTIAE **ominutiae,
    /* doubles.                                                   */
    bits_8to6(pdata, pw, ph);
 
-   print2log("\nINITIALIZATION AND PADDING DONE\n");
 
    /******************/
    /*      MAPS      */
@@ -543,7 +523,6 @@ int lfs_detect_minutiae_V2(MINUTIAE **ominutiae,
    free_dftwaves(dftwaves);
    free_rotgrids(dftgrids);
 
-   print2log("\nMAPS DONE\n");
 
    time_accum(imap_timer, imap_time);
 
@@ -600,7 +579,6 @@ int lfs_detect_minutiae_V2(MINUTIAE **ominutiae,
       return(-581);
    }
 
-   print2log("\nBINARIZATION DONE\n");
 
    time_accum(bin_timer, bin_time);
 
@@ -650,7 +628,6 @@ int lfs_detect_minutiae_V2(MINUTIAE **ominutiae,
       return(ret);
    }
 
-   print2log("\nMINUTIA DETECTION DONE\n");
 
    time_accum(rm_minutia_timer, rm_minutia_time);
 
@@ -671,7 +648,6 @@ int lfs_detect_minutiae_V2(MINUTIAE **ominutiae,
    }
 
 
-   print2log("\nNEIGHBOR RIDGE COUNT DONE\n");
 
    time_accum(ridge_count_timer, ridge_count_time);
 
@@ -719,10 +695,6 @@ int lfs_detect_minutiae_V2(MINUTIAE **ominutiae,
               ridge_count_time);
    /* print total timing statistics */
    print_time(stderr, "TIMER: Total time   = %f (secs)\n", total_time);
-
-   /* If LOG_REPORT defined, close log report file. */
-   if((ret = close_logfile()))
-      return(ret);
 
    return(0);
 }

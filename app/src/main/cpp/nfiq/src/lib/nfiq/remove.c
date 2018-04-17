@@ -265,7 +265,6 @@ int remove_holes(MINUTIAE *minutiae,
    int i, ret;
    MINUTIA *minutia;
 
-   print2log("\nREMOVING HOLES:\n");
 
    i = 0;
    /* Foreach minutia remaining in list ... */
@@ -278,8 +277,6 @@ int remove_holes(MINUTIAE *minutiae,
          ret = on_loop(minutia, lfsparms->small_loop_len, bdata, iw, ih);
          /* If minutia is on a loop ... or loop test IGNORED */
          if((ret == LOOP_FOUND) || (ret == IGNORE)){
-
-            print2log("%d,%d RM\n", minutia->x, minutia->y);
 
             /* Then remove the minutia from list. */
             if((ret = remove_minutia(i, minutiae))){
@@ -339,8 +336,6 @@ int remove_hooks(MINUTIAE *minutiae,
    MINUTIA *minutia1, *minutia2;
    double dist;
 
-   print2log("\nREMOVING HOOKS:\n");
-
    /* Allocate list of minutia indices that upon completion of testing */
    /* should be removed from the minutiae lists.  Note: That using      */
    /* "calloc" initializes the list to FALSE.                          */
@@ -370,7 +365,6 @@ int remove_hooks(MINUTIAE *minutiae,
       /* If current first minutia not previously set to be removed. */
       if(!to_remove[f]){
 
-         print2log("\n");
 
          /* Set first minutia to temporary pointer. */
          minutia1 = minutiae->list[f];
@@ -380,9 +374,6 @@ int remove_hooks(MINUTIAE *minutiae,
             /* Set second minutia to temporary pointer. */
             minutia2 = minutiae->list[s];
 
-            print2log("1:%d(%d,%d)%d 2:%d(%d,%d)%d ",
-                      f, minutia1->x, minutia1->y, minutia1->type,
-                      s, minutia2->x, minutia2->y, minutia2->type);
 
             /* The binary image is potentially being edited during each */
             /* iteration of the secondary minutia loop, therefore       */
@@ -391,7 +382,6 @@ int remove_hooks(MINUTIAE *minutiae,
 
             /* If the first minutia's pixel has been previously changed... */
             if(*(bdata+(minutia1->y*iw)+minutia1->x) != minutia1->type){
-               print2log("\n");
                /* Then break out of secondary loop and skip to next first. */
                break;
             }
@@ -409,7 +399,6 @@ int remove_hooks(MINUTIAE *minutiae,
                /* If delta y small enough (ex. < 8 pixels) ... */
                if(delta_y <= lfsparms->max_rmtest_dist){
 
-                  print2log("1DY ");
 
                   /* Compute Euclidean distance between 1st & 2nd mintuae. */
                   dist = distance(minutia1->x, minutia1->y,
@@ -417,7 +406,6 @@ int remove_hooks(MINUTIAE *minutiae,
                   /* If distance is NOT too large (ex. < 8 pixels) ... */
                   if(dist <= lfsparms->max_rmtest_dist){
 
-                     print2log("2DS ");
 
                      /* Compute "inner" difference between directions on */
                      /* a full circle and test.                          */
@@ -434,7 +422,6 @@ int remove_hooks(MINUTIAE *minutiae,
                      /* more likely they should be joined)                  */
                      if(deltadir > min_deltadir){
 
-                        print2log("3DD ");
 
                         /* If 1st & 2nd minutiae are NOT same type ... */
                         if(minutia1->type != minutia2->type){
@@ -448,7 +435,6 @@ int remove_hooks(MINUTIAE *minutiae,
                            /* If hook detected between pair ... */
                            if(ret == HOOK_FOUND){
 
-                              print2log("4HK RM\n");
 
                               /* Set to remove first minutia. */
                               to_remove[f] = TRUE;
@@ -458,7 +444,6 @@ int remove_hooks(MINUTIAE *minutiae,
                            /* If hook test IGNORED ... */
                            else if (ret == IGNORE){
 
-                              print2log("RM\n");
 
                               /* Set to remove first minutia. */
                               to_remove[f] = TRUE;
@@ -473,32 +458,26 @@ int remove_hooks(MINUTIAE *minutiae,
                            }
                            /* Otherwise, no hook found, so skip to next */
                            /* second minutia.                           */
-                           else
-                              print2log("\n");
+                           else {}
                         }
-                        else
-                           print2log("\n");
+                        else {}
                         /* End different type test. */
                      }/* End deltadir test. */
-                     else
-                        print2log("\n");
+                     else {}
                   }/* End distance test. */
-                  else
-                     print2log("\n");
+                  else {}
                }
                /* Otherwise, current 2nd too far below 1st, so skip to next */
                /* 1st minutia.                                              */
                else{
 
-                  print2log("\n");
 
                   /* Break out of inner secondary loop. */
                   break;
                }/* End delta-y test. */
 
             }/* End if !to_remove[s] */
-            else
-               print2log("\n");
+            else {}
 
             /* Bump to next second minutia in minutiae list. */
             s++;
@@ -564,7 +543,6 @@ int remove_hooks_islands_lakes_overlaps(MINUTIAE *minutiae,
    MINUTIA *minutia1, *minutia2;
    double dist;
 
-   print2log("\nREMOVING HOOKS, ISLANDS, LAKES, AND OVERLAPS:\n");
 
    /* Allocate list of minutia indices that upon completion of testing */
    /* should be removed from the minutiae lists.  Note: That using      */
@@ -596,7 +574,6 @@ int remove_hooks_islands_lakes_overlaps(MINUTIAE *minutiae,
       /* If current first minutia not previously set to be removed. */
       if(!to_remove[f]){
 
-         print2log("\n");
 
          /* Set first minutia to temporary pointer. */
          minutia1 = minutiae->list[f];
@@ -606,9 +583,6 @@ int remove_hooks_islands_lakes_overlaps(MINUTIAE *minutiae,
             /* Set second minutia to temporary pointer. */
             minutia2 = minutiae->list[s];
 
-            print2log("1:%d(%d,%d)%d 2:%d(%d,%d)%d ",
-                      f, minutia1->x, minutia1->y, minutia1->type,
-                      s, minutia2->x, minutia2->y, minutia2->type);
 
             /* The binary image is potentially being edited during each */
             /* iteration of the secondary minutia loop, therefore       */
@@ -617,7 +591,6 @@ int remove_hooks_islands_lakes_overlaps(MINUTIAE *minutiae,
 
             /* If the first minutia's pixel has been previously changed... */
             if(*(bdata+(minutia1->y*iw)+minutia1->x) != minutia1->type){
-               print2log("\n");
                /* Then break out of secondary loop and skip to next first. */
                break;
             }
@@ -635,7 +608,6 @@ int remove_hooks_islands_lakes_overlaps(MINUTIAE *minutiae,
                /* If delta y small enough (ex. < 8 pixels) ... */
                if(delta_y <= lfsparms->max_rmtest_dist){
 
-                  print2log("1DY ");
 
                   /* Compute Euclidean distance between 1st & 2nd mintuae. */
                   dist = distance(minutia1->x, minutia1->y,
@@ -643,7 +615,6 @@ int remove_hooks_islands_lakes_overlaps(MINUTIAE *minutiae,
                   /* If distance is NOT too large (ex. < 8 pixels) ... */
                   if(dist <= lfsparms->max_rmtest_dist){
 
-                     print2log("2DS ");
 
                      /* Compute "inner" difference between directions on */
                      /* a full circle and test.                          */
@@ -660,7 +631,6 @@ int remove_hooks_islands_lakes_overlaps(MINUTIAE *minutiae,
                      /* more likely they should be joined)                  */
                      if(deltadir > min_deltadir){
 
-                        print2log("3DD ");
 
                         /* If 1st & 2nd minutiae are NOT same type ... */
                         if(minutia1->type != minutia2->type){
@@ -672,7 +642,6 @@ int remove_hooks_islands_lakes_overlaps(MINUTIAE *minutiae,
                            /* If hook detected between pair ... */
                            if(ret == HOOK_FOUND){
 
-                              print2log("4HK RM\n");
 
                               /* Set to remove first minutia. */
                               to_remove[f] = TRUE;
@@ -682,7 +651,6 @@ int remove_hooks_islands_lakes_overlaps(MINUTIAE *minutiae,
                            /* If hook test IGNORED ... */
                            else if (ret == IGNORE){
 
-                              print2log("RM\n");
 
                               /* Set to remove first minutia. */
                               to_remove[f] = TRUE;
@@ -697,8 +665,7 @@ int remove_hooks_islands_lakes_overlaps(MINUTIAE *minutiae,
                            }
                            /* Otherwise, no hook found, so skip to next */
                            /* second minutia.                           */
-                           else
-                              print2log("\n");
+                           else {}
                         }
                         /* Otherwise, pair is the same type, so test to see */
                         /* if both are on an island or lake.                */
@@ -713,7 +680,6 @@ int remove_hooks_islands_lakes_overlaps(MINUTIAE *minutiae,
                            /* If pair is on island/lake ... */
                            if(ret == LOOP_FOUND){
 
-                              print2log("4IL RM\n");
 
                               /* Fill the loop. */
                               if((ret = fill_loop(loop_x, loop_y, nloop,
@@ -733,7 +699,6 @@ int remove_hooks_islands_lakes_overlaps(MINUTIAE *minutiae,
                            /* If island/lake test IGNORED ... */
                            else if (ret == IGNORE){
 
-                              print2log("RM\n");
 
                               /* Set to remove first minutia. */
                               to_remove[f] = TRUE;
@@ -754,7 +719,6 @@ int remove_hooks_islands_lakes_overlaps(MINUTIAE *minutiae,
                                            minutia2->x, minutia2->y,
                                            bdata, iw, ih, lfsparms)){
 
-                                 print2log("4OV RM\n");
 
                                  /* Then assume overlap, so ...             */
                                  /* Join first and second minutiae in image. */
@@ -771,30 +735,25 @@ int remove_hooks_islands_lakes_overlaps(MINUTIAE *minutiae,
                               }
                               /* Otherwise, pair not on an overlap, so skip */
                               /* to next second minutia.                    */
-                              else
-                                 print2log("\n");
+                              else {}
                            }/* End overlap test. */
                         }/* End same type tests (island/lake & overlap). */
                      }/* End deltadir test. */
-                     else
-                        print2log("\n");
+                     else {}
                   }/* End distance test. */
-                  else
-                     print2log("\n");
+                  else {}
                }
                /* Otherwise, current 2nd too far below 1st, so skip to next */
                /* 1st minutia.                                              */
                else{
 
-                  print2log("\n");
 
                   /* Break out of inner secondary loop. */
                   break;
                }/* End delta-y test. */
 
             }/* End if !to_remove[s] */
-            else
-               print2log("\n");
+            else {}
 
             /* Bump to next second minutia in minutiae list. */
             s++;
@@ -860,7 +819,6 @@ int remove_islands_and_lakes(MINUTIAE *minutiae,
    double dist;
    int dist_thresh, half_loop;
 
-   print2log("\nREMOVING ISLANDS AND LAKES:\n");
 
    dist_thresh = lfsparms->max_rmtest_dist;
    half_loop = lfsparms->max_half_loop;
@@ -895,7 +853,6 @@ int remove_islands_and_lakes(MINUTIAE *minutiae,
       /* If current first minutia not previously set to be removed. */
       if(!to_remove[f]){
 
-         print2log("\n");
 
          /* Set first minutia to temporary pointer. */
          minutia1 = minutiae->list[f];
@@ -909,9 +866,6 @@ int remove_islands_and_lakes(MINUTIAE *minutiae,
             /* If the secondary minutia is desired type ... */
             if(minutia2->type == minutia1->type){
 
-               print2log("1:%d(%d,%d)%d 2:%d(%d,%d)%d ",
-                         f, minutia1->x, minutia1->y, minutia1->type,
-                         s, minutia2->x, minutia2->y, minutia2->type);
 
                /* The binary image is potentially being edited during   */
                /* each iteration of the secondary minutia loop,         */
@@ -921,7 +875,6 @@ int remove_islands_and_lakes(MINUTIAE *minutiae,
                /* If the first minutia's pixel has been previously */
                /* changed...                                       */
                if(*(bdata+(minutia1->y*iw)+minutia1->x) != minutia1->type){
-                  print2log("\n");
                   /* Then break out of secondary loop and skip to next */
                   /* first.                                            */
                   break;
@@ -941,7 +894,6 @@ int remove_islands_and_lakes(MINUTIAE *minutiae,
                   /* If delta y small enough (ex. <16 pixels)... */
                   if(delta_y <= dist_thresh){
 
-                     print2log("1DY ");
 
                      /* Compute Euclidean distance between 1st & 2nd */
                      /* mintuae.                                     */
@@ -951,7 +903,6 @@ int remove_islands_and_lakes(MINUTIAE *minutiae,
                      /* If distance is NOT too large (ex. <16 pixels)... */
                      if(dist <= dist_thresh){
 
-                        print2log("2DS ");
 
                         /* Compute "inner" difference between directions */
                         /* on a full circle and test.                    */
@@ -969,7 +920,6 @@ int remove_islands_and_lakes(MINUTIAE *minutiae,
                         /* other the more likely they should be joined) */
                         if(deltadir > min_deltadir){
 
-                           print2log("3DD ");
 
                            /* Pair is the same type, so test to see */
                            /* if both are on an island or lake.     */
@@ -983,7 +933,6 @@ int remove_islands_and_lakes(MINUTIAE *minutiae,
                            /* If pair is on island/lake ... */
                            if(ret == LOOP_FOUND){
 
-                              print2log("4IL RM\n");
 
                               /* Fill the loop. */
                               if((ret = fill_loop(loop_x, loop_y, nloop,
@@ -1003,7 +952,6 @@ int remove_islands_and_lakes(MINUTIAE *minutiae,
                            /* If island/lake test IGNORED ... */
                            else if (ret == IGNORE){
 
-                              print2log("RM\n");
 
                               /* Set to remove first minutia. */
                               to_remove[f] = TRUE;
@@ -1016,27 +964,22 @@ int remove_islands_and_lakes(MINUTIAE *minutiae,
                               free(to_remove);
                               return(ret);
                            }
-                           else
-                              print2log("\n");
+                           else {}
                         }/* End deltadir test. */
-                        else
-                           print2log("\n");
+                        else {}
                      }/* End distance test. */
-                     else
-                        print2log("\n");
+                     else {}
                   }
                   /* Otherwise, current 2nd too far below 1st, so skip to */
                   /* next 1st minutia.                                    */
                   else{
 
-                     print2log("\n");
 
                      /* Break out of inner secondary loop. */
                      break;
                   }/* End delta-y test. */
                }/* End if !to_remove[s] */
-               else
-                  print2log("\n");
+               else {}
 
             }/* End if 2nd not desired type */
 
@@ -1117,7 +1060,6 @@ int remove_malformations(MINUTIAE *minutiae,
    int fmapval, removed;
    int blk_x, blk_y;
 
-   print2log("\nREMOVING MALFORMATIONS:\n");
 
    for(i = minutiae->num-1; i >= 0; i--){
       minutia = minutiae->list[i];
@@ -1145,7 +1087,6 @@ int remove_malformations(MINUTIAE *minutiae,
             /* Deallocate the contour. */
             free_contour(contour_x, contour_y, contour_ex, contour_ey);
 
-         print2log("%d,%d RMA\n", minutia->x, minutia->y);
 
          /* Then remove the minutia. */
          if((ret = remove_minutia(i, minutiae)))
@@ -1189,7 +1130,6 @@ int remove_malformations(MINUTIAE *minutiae,
                /* Deallocate the contour. */
                free_contour(contour_x, contour_y, contour_ex, contour_ey);
 
-            print2log("%d,%d RMB\n", minutia->x, minutia->y);
 
             /* Then remove the minutia. */
             if((ret = remove_minutia(i, minutiae)))
@@ -1222,7 +1162,6 @@ int remove_malformations(MINUTIAE *minutiae,
             /* Check to see if distances are not zero. */
             if((a_dist == 0.0) || (b_dist == 0.0)){
                /* Remove the malformation minutia. */
-               print2log("%d,%d RMMAL1\n", minutia->x, minutia->y);
                if((ret = remove_minutia(i, minutiae)))
                   /* If system error, return error code. */
                   return(ret);
@@ -1237,7 +1176,6 @@ int remove_malformations(MINUTIAE *minutiae,
                   /* Need to test this out!                                 */
                   if(b_dist > lfsparms->max_malformation_dist){
                      /* Remove the malformation minutia. */
-                     print2log("%d,%d RMMAL2\n", minutia->x, minutia->y);
                      if((ret = remove_minutia(i, minutiae)))
                         /* If system error, return error code. */
                         return(ret);
@@ -1264,8 +1202,7 @@ int remove_malformations(MINUTIAE *minutiae,
                      if(ratio > lfsparms->min_malformation_ratio){
                         /* Remove the malformation minutia. */
                         /* Then remove the minutia. */
-                        print2log("%d,%d RMMAL3 (%f)\n",
-                                  minutia->x, minutia->y, ratio);
+
                         if((ret = remove_minutia(i, minutiae))){
                            free(x_list);
                            free(y_list);
@@ -1379,7 +1316,6 @@ int remove_near_invblock(MINUTIAE *minutiae, int *nmap,
    static int blkdx[9] = {  0, 1, 1, 1, 0,-1,-1,-1, 0 };  /* Delta-X     */
    static int blkdy[9] = { -1,-1, 0, 1, 1, 1, 0,-1,-1 };  /* Delta-Y     */
 
-   print2log("\nREMOVING MINUTIA NEAR INVALID BLOCKS:\n");
 
    /* If the margin covers more than the entire block ... */
    if(lfsparms->inv_block_margin > (lfsparms->blocksize>>1)){
@@ -1459,7 +1395,6 @@ int remove_near_invblock(MINUTIAE *minutiae, int *nmap,
             if((nbx < 0) || (nbx >= mw) ||
                (nby < 0) || (nby >= mh)){
 
-               print2log("%d,%d RM1\n", minutia->x, minutia->y);
 
                /* Then the minutia is in a margin adjacent to the edge of */
                /* the image.                                              */
@@ -1486,7 +1421,6 @@ int remove_near_invblock(MINUTIAE *minutiae, int *nmap,
                /* (ex. 7)...                                      */
                if(nvalid < lfsparms->rm_valid_nbr_min){
 
-                  print2log("%d,%d RM2\n", minutia->x, minutia->y);
 
                   /* Then remove the current minutia from the list. */
                   if((ret = remove_minutia(i, minutiae)))
@@ -1609,7 +1543,6 @@ int remove_near_invblock_V2(MINUTIAE *minutiae, int *direction_map,
    static int blkdx[9] = {  0, 1, 1, 1, 0,-1,-1,-1, 0 };  /* Delta-X     */
    static int blkdy[9] = { -1,-1, 0, 1, 1, 1, 0,-1,-1 };  /* Delta-Y     */
 
-   print2log("\nREMOVING MINUTIA NEAR INVALID BLOCKS:\n");
 
    /* If the margin covers more than the entire block ... */
    if(lfsparms->inv_block_margin > (lfsparms->blocksize>>1)){
@@ -1689,7 +1622,6 @@ int remove_near_invblock_V2(MINUTIAE *minutiae, int *direction_map,
             if((nbx < 0) || (nbx >= mw) ||
                (nby < 0) || (nby >= mh)){
 
-               print2log("%d,%d RM1\n", minutia->x, minutia->y);
 
                /* Then the minutia is in a margin adjacent to the edge of */
                /* the image.                                              */
@@ -1716,7 +1648,6 @@ int remove_near_invblock_V2(MINUTIAE *minutiae, int *direction_map,
                /* (ex. 7)...                                      */
                if(nvalid < lfsparms->rm_valid_nbr_min){
 
-                  print2log("%d,%d RM2\n", minutia->x, minutia->y);
 
                   /* Then remove the current minutia from the list. */
                   if((ret = remove_minutia(i, minutiae)))
@@ -1779,7 +1710,6 @@ int remove_pointing_invblock(MINUTIAE *minutiae,
    double pi_factor, theta;
    double dx, dy;
 
-   print2log("\nREMOVING MINUTIA POINTING TO INVALID BLOCKS:\n");
 
    /* Compute factor for converting integer directions to radians. */
    pi_factor = M_PI / (double)lfsparms->num_directions;
@@ -1824,7 +1754,6 @@ int remove_pointing_invblock(MINUTIAE *minutiae,
       /* If the NMAP value of translated minutia point is INVALID ... */
       if(nmapval == INVALID_DIR){
 
-         print2log("%d,%d RM\n", minutia->x, minutia->y);
 
          /* Remove the minutia from the minutiae list. */
          if((ret = remove_minutia(i, minutiae))){
@@ -1871,7 +1800,6 @@ int remove_pointing_invblock_V2(MINUTIAE *minutiae,
    double pi_factor, theta;
    double dx, dy;
 
-   print2log("\nREMOVING MINUTIA POINTING TO INVALID BLOCKS:\n");
 
    /* Compute factor for converting integer directions to radians. */
    pi_factor = M_PI / (double)lfsparms->num_directions;
@@ -1912,7 +1840,6 @@ int remove_pointing_invblock_V2(MINUTIAE *minutiae,
       /* If the block's direction is INVALID ... */
       if(dmapval == INVALID_DIR){
 
-         print2log("%d,%d RM\n", minutia->x, minutia->y);
 
          /* Remove the minutia from the minutiae list. */
          if((ret = remove_minutia(i, minutiae))){
@@ -1961,7 +1888,6 @@ int remove_overlaps(MINUTIAE *minutiae,
    double dist;
    int joindir, opp1dir, half_ndirs;
 
-   print2log("\nREMOVING OVERLAPS:\n");
 
    /* Allocate list of minutia indices that upon completion of testing */
    /* should be removed from the minutiae lists.  Note: That using      */
@@ -1994,7 +1920,6 @@ int remove_overlaps(MINUTIAE *minutiae,
       /* If current first minutia not previously set to be removed. */
       if(!to_remove[f]){
 
-         print2log("\n");
 
          /* Set first minutia to temporary pointer. */
          minutia1 = minutiae->list[f];
@@ -2004,9 +1929,6 @@ int remove_overlaps(MINUTIAE *minutiae,
             /* Set second minutia to temporary pointer. */
             minutia2 = minutiae->list[s];
 
-            print2log("1:%d(%d,%d)%d 2:%d(%d,%d)%d ",
-                      f, minutia1->x, minutia1->y, minutia1->type,
-                      s, minutia2->x, minutia2->y, minutia2->type);
 
             /* The binary image is potentially being edited during each */
             /* iteration of the secondary minutia loop, therefore       */
@@ -2015,7 +1937,6 @@ int remove_overlaps(MINUTIAE *minutiae,
 
             /* If the first minutia's pixel has been previously changed... */
             if(*(bdata+(minutia1->y*iw)+minutia1->x) != minutia1->type){
-               print2log("\n");
                /* Then break out of secondary loop and skip to next first. */
                break;
             }
@@ -2033,7 +1954,6 @@ int remove_overlaps(MINUTIAE *minutiae,
                /* If delta y small enough (ex. < 8 pixels) ... */
                if(delta_y <= lfsparms->max_overlap_dist){
 
-                  print2log("1DY ");
 
                   /* Compute Euclidean distance between 1st & 2nd mintuae. */
                   dist = distance(minutia1->x, minutia1->y,
@@ -2041,7 +1961,6 @@ int remove_overlaps(MINUTIAE *minutiae,
                   /* If distance is NOT too large (ex. < 8 pixels) ... */
                   if(dist <= lfsparms->max_overlap_dist){
 
-                     print2log("2DS ");
 
                      /* Compute "inner" difference between directions on */
                      /* a full circle and test.                          */
@@ -2058,7 +1977,6 @@ int remove_overlaps(MINUTIAE *minutiae,
                      /* more likely they should be joined)                  */
                      if(deltadir > min_deltadir){
 
-                        print2log("3DD ");
 
                         /* If 1st & 2nd minutiae are same type ... */
                         if(minutia1->type == minutia2->type){
@@ -2081,7 +1999,6 @@ int remove_overlaps(MINUTIAE *minutiae,
                            joindir = abs(opp1dir - joindir);
                            joindir = min(joindir, full_ndirs - joindir);
 
-                           print2log("joindir=%d dist=%f ", joindir,dist);
 
                            /* If the joining angle is <= 90 degrees OR   */
                            /*    the 2 points are sufficiently close AND */
@@ -2092,7 +2009,6 @@ int remove_overlaps(MINUTIAE *minutiae,
                                          minutia2->x, minutia2->y,
                                          bdata, iw, ih, lfsparms)){
 
-                              print2log("4OV RM\n");
 
                               /* Then assume overlap, so ...             */
                               /* Set to remove first minutia. */
@@ -2102,32 +2018,26 @@ int remove_overlaps(MINUTIAE *minutiae,
                            }
                            /* Otherwise, pair not on an overlap, so skip */
                            /* to next second minutia.                    */
-                           else
-                              print2log("\n");
+                           else{}
                         }
-                        else
-                           print2log("\n");
+                        else {}
                         /* End same type test. */
                      }/* End deltadir test. */
-                     else
-                        print2log("\n");
+                     else {}
                   }/* End distance test. */
-                  else
-                     print2log("\n");
+                  else{}
                }
                /* Otherwise, current 2nd too far below 1st, so skip to next */
                /* 1st minutia.                                              */
                else{
 
-                  print2log("\n");
 
                   /* Break out of inner secondary loop. */
                   break;
                }/* End delta-y test. */
 
             }/* End if !to_remove[s] */
-            else
-               print2log("\n");
+            else{}
 
             /* Bump to next second minutia in minutiae list. */
             s++;
@@ -2228,7 +2138,6 @@ int remove_pores(MINUTIAE *minutiae,
    /*                                                                  */
 
 
-   print2log("\nREMOVING PORES:\n");
 
    /* Factor for converting integer directions into radians. */
    pi_factor = M_PI/(double)lfsparms->num_directions;
@@ -2307,7 +2216,6 @@ int remove_pores(MINUTIAE *minutiae,
                                      contour_ex, contour_ey);
 
 
-                     print2log("%d,%d RMB\n", minutia->x, minutia->y);
 
                      /* Then remove the minutia. */
                      if((ret = remove_minutia(i, minutiae)))
@@ -2351,7 +2259,6 @@ int remove_pores(MINUTIAE *minutiae,
                            free_contour(contour_x, contour_y,
                                         contour_ex, contour_ey);
 
-                        print2log("%d,%d RMD\n", minutia->x, minutia->y);
 
                         /* Then remove the minutia. */
                         if((ret = remove_minutia(i, minutiae)))
@@ -2405,7 +2312,6 @@ int remove_pores(MINUTIAE *minutiae,
                                  free_contour(contour_x, contour_y,
                                               contour_ex, contour_ey);
 
-                              print2log("%d,%d RMA\n", minutia->x, minutia->y);
 
                               /* Then remove the minutia. */
                               if((ret = remove_minutia(i, minutiae)))
@@ -2450,8 +2356,7 @@ int remove_pores(MINUTIAE *minutiae,
                                     free_contour(contour_x, contour_y,
                                                  contour_ex, contour_ey);
 
-                                 print2log("%d,%d RMC\n",
-                                           minutia->x, minutia->y);
+
 
                                  /* Then remove the minutia. */
                                  if((ret = remove_minutia(i, minutiae)))
@@ -2483,11 +2388,7 @@ int remove_pores(MINUTIAE *minutiae,
                                     /* If ratio is small enough (ex. 2.25)...*/
                                     if(ratio <= lfsparms->pores_max_ratio){
 
-                                       print2log("%d,%d ",
-                                                 minutia->x, minutia->y);
-      print2log("R=%d,%d P=%d,%d B=%d,%d D=%d,%d Q=%d,%d A=%d,%d C=%d,%d ",
-              rx, ry, px, py, bx, by, dx, dy, qx, qy, ax, ay, cx, cy);
-                                       print2log("RMRATIO\n");
+
 
                                        /* Then assume pore & remove minutia. */
                                        if((ret = remove_minutia(i, minutiae)))
@@ -2505,7 +2406,6 @@ int remove_pores(MINUTIAE *minutiae,
                         /* Otherwise, Q not found ... */
                         else{
 
-                           print2log("%d,%d RMQ\n", minutia->x, minutia->y);
 
                            /* Then remove the minutia. */
                            if((ret = remove_minutia(i, minutiae)))
@@ -2520,7 +2420,6 @@ int remove_pores(MINUTIAE *minutiae,
                /* Otherwise, P not found ... */
                else{
 
-                  print2log("%d,%d RMP\n", minutia->x, minutia->y);
 
                   /* Then remove the minutia. */
                   if((ret = remove_minutia(i, minutiae)))
@@ -2617,7 +2516,6 @@ int remove_pores_V2(MINUTIAE *minutiae,
    /*                                                                  */
 
 
-   print2log("\nREMOVING PORES:\n");
 
    /* Factor for converting integer directions into radians. */
    pi_factor = M_PI/(double)lfsparms->num_directions;
@@ -2698,7 +2596,6 @@ int remove_pores_V2(MINUTIAE *minutiae,
                      free_contour(contour_x, contour_y,
                                   contour_ex, contour_ey);
 
-                  print2log("%d,%d RMB\n", minutia->x, minutia->y);
 
                   /* Then remove the minutia. */
                   if((ret = remove_minutia(i, minutiae)))
@@ -2742,7 +2639,6 @@ int remove_pores_V2(MINUTIAE *minutiae,
                         free_contour(contour_x, contour_y,
                                      contour_ex, contour_ey);
 
-                     print2log("%d,%d RMD\n", minutia->x, minutia->y);
 
                      /* Then remove the minutia. */
                      if((ret = remove_minutia(i, minutiae)))
@@ -2797,7 +2693,6 @@ int remove_pores_V2(MINUTIAE *minutiae,
                               free_contour(contour_x, contour_y,
                                            contour_ex, contour_ey);
 
-                           print2log("%d,%d RMA\n", minutia->x, minutia->y);
 
                            /* Then remove the minutia. */
                            if((ret = remove_minutia(i, minutiae)))
@@ -2842,8 +2737,6 @@ int remove_pores_V2(MINUTIAE *minutiae,
                                  free_contour(contour_x, contour_y,
                                               contour_ex, contour_ey);
 
-                              print2log("%d,%d RMC\n",
-                                        minutia->x, minutia->y);
 
                               /* Then remove the minutia. */
                               if((ret = remove_minutia(i, minutiae)))
@@ -2876,11 +2769,6 @@ int remove_pores_V2(MINUTIAE *minutiae,
                                  /* If ratio is small enough (ex. 2.25)...*/
                                  if(ratio <= lfsparms->pores_max_ratio){
 
-                                    print2log("%d,%d ",
-                                              minutia->x, minutia->y);
-      print2log("R=%d,%d P=%d,%d B=%d,%d D=%d,%d Q=%d,%d A=%d,%d C=%d,%d ",
-              rx, ry, px, py, bx, by, dx, dy, qx, qy, ax, ay, cx, cy);
-                                    print2log("RMRATIO %f\n", ratio);
 
                                     /* Then assume pore & remove minutia. */
                                     if((ret = remove_minutia(i, minutiae)))
@@ -2898,7 +2786,6 @@ int remove_pores_V2(MINUTIAE *minutiae,
                      /* Otherwise, Q not found ... */
                      else{
 
-                        print2log("%d,%d RMQ\n", minutia->x, minutia->y);
 
                         /* Then remove the minutia. */
                         if((ret = remove_minutia(i, minutiae)))
@@ -2913,7 +2800,6 @@ int remove_pores_V2(MINUTIAE *minutiae,
             /* Otherwise, P not found ... */
             else{
 
-               print2log("%d,%d RMP\n", minutia->x, minutia->y);
 
                /* Then remove the minutia. */
                if((ret = remove_minutia(i, minutiae)))
@@ -2969,7 +2855,6 @@ int remove_or_adjust_side_minutiae(MINUTIAE *minutiae,
    int *minmax_val, *minmax_i, *minmax_type, minmax_alloc, minmax_num;
    double drot_y;
 
-   print2log("\nADJUSTING SIDE MINUTIA:\n");
 
    /* Allocate working memory for holding rotated y-coord of a */
    /* minutia's contour.                                       */
@@ -3011,7 +2896,6 @@ int remove_or_adjust_side_minutiae(MINUTIAE *minutiae,
          (ret == IGNORE) ||
          (ret == INCOMPLETE)){
 
-         print2log("%d,%d RM1\n", minutia->x, minutia->y);
 
          /* Remove minutia from list. */
          if((ret = remove_minutia(i, minutiae))){
@@ -3080,7 +2964,6 @@ int remove_or_adjust_side_minutiae(MINUTIAE *minutiae,
          if((minmax_num == 1) &&
             (minmax_type[0] == -1)){
 
-            print2log("%d,%d AD1 ", minutia->x, minutia->y);
 
             /* Reset loation of minutia point to contour point at minima. */
             minutia->x = contour_x[minmax_i[0]];
@@ -3090,7 +2973,6 @@ int remove_or_adjust_side_minutiae(MINUTIAE *minutiae,
             /* Advance to the next minutia in the list. */
             i++;
 
-            print2log("%d,%d\n", minutia->x, minutia->y);
 
          }
          /* If exactly 3 min/max found and they are min-max-min ... */
@@ -3102,7 +2984,6 @@ int remove_or_adjust_side_minutiae(MINUTIAE *minutiae,
             else
                minloc = minmax_i[2];
 
-            print2log("%d,%d AD2 ", minutia->x, minutia->y);
 
             /* Reset loation of minutia point to contour point at minima. */
             minutia->x = contour_x[minloc];
@@ -3112,13 +2993,11 @@ int remove_or_adjust_side_minutiae(MINUTIAE *minutiae,
             /* Advance to the next minutia in the list. */
             i++;
 
-            print2log("%d,%d\n", minutia->x, minutia->y);
 
          }
          /* Otherwise, ... */
          else{
 
-            print2log("%d,%d RM2\n", minutia->x, minutia->y);
 
             /* Remove minutia from list. */
             if((ret = remove_minutia(i, minutiae))){
@@ -3191,7 +3070,6 @@ int remove_or_adjust_side_minutiae_V2(MINUTIAE *minutiae,
    double drot_y;
    int bx, by;
 
-   print2log("\nADJUSTING SIDE MINUTIA:\n");
 
    /* Allocate working memory for holding rotated y-coord of a */
    /* minutia's contour.                                       */
@@ -3233,7 +3111,6 @@ int remove_or_adjust_side_minutiae_V2(MINUTIAE *minutiae,
          (ret == IGNORE) ||
          (ret == INCOMPLETE)){
 
-         print2log("%d,%d RM1\n", minutia->x, minutia->y);
 
          /* Remove minutia from list. */
          if((ret = remove_minutia(i, minutiae))){
@@ -3302,7 +3179,6 @@ int remove_or_adjust_side_minutiae_V2(MINUTIAE *minutiae,
          if((minmax_num == 1) &&
             (minmax_type[0] == -1)){
 
-            print2log("%d,%d ", minutia->x, minutia->y);
 
             /* Reset loation of minutia point to contour point at minima. */
             minutia->x = contour_x[minmax_i[0]];
@@ -3330,12 +3206,10 @@ int remove_or_adjust_side_minutiae_V2(MINUTIAE *minutiae,
                /* No need to advance because next minutia has "slid" */
                /* into position pointed to by 'i'.                   */
 
-               print2log("RM2\n");
             }
             else{
                /* Advance to the next minutia in the list. */
                i++;
-               print2log("AD1 %d,%d\n", minutia->x, minutia->y);
             }
 
          }
@@ -3348,7 +3222,6 @@ int remove_or_adjust_side_minutiae_V2(MINUTIAE *minutiae,
             else
                minloc = minmax_i[2];
 
-            print2log("%d,%d ", minutia->x, minutia->y);
 
             /* Reset loation of minutia point to contour point at minima. */
             minutia->x = contour_x[minloc];
@@ -3376,18 +3249,15 @@ int remove_or_adjust_side_minutiae_V2(MINUTIAE *minutiae,
                /* No need to advance because next minutia has "slid" */
                /* into position pointed to by 'i'.                   */
 
-               print2log("RM3\n");
             }
             else{
                /* Advance to the next minutia in the list. */
                i++;
-               print2log("AD2 %d,%d\n", minutia->x, minutia->y);
             }
          }
          /* Otherwise, ... */
          else{
 
-            print2log("%d,%d RM4\n", minutia->x, minutia->y);
 
             /* Remove minutia from list. */
             if((ret = remove_minutia(i, minutiae))){

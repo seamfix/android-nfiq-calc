@@ -113,7 +113,7 @@ class NFIQUtil {
 
             val filter = ColorMatrixColorFilter(matrix)
 
-            drawable.colorFilter = filter
+            drawable.setColorFilter(filter)
 
             return drawable
         }
