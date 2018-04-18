@@ -34,6 +34,6 @@ allprojects {
 Add the dependency:
 ```
 dependencies {
-	        compile 'com.github.seamfix11:android-nfiq-calc:1.0'
+	        compile 'com.github.seamfix11:android-nfiq-calc:1.0.1'
 	}
 ```
