@@ -1,4 +1,4 @@
-[![](https://jitpack.io/v/seamfix11/android-nfiq-calc.svg)](https://jitpack.io/#seamfix11/android-nfiq-calc)
+[![](https://jitpack.io/v/seamfixng/android-nfiq-calc.svg)](https://jitpack.io/#seamfixng/android-nfiq-calc)
 
 
 # android-nfiq-calc
@@ -34,6 +34,6 @@ allprojects {
 Add the dependency:
 ```
 dependencies {
-	        compile 'com.github.seamfix11:android-nfiq-calc:1.0'
+	        compile 'com.github.seamfix11:android-nfiq-calc:1.0.1'
 	}
 ```
