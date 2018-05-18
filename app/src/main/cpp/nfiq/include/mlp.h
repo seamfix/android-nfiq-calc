@@ -478,10 +478,6 @@ extern void rd_words(char, FILE *, int, int, char, void *);
 /* RPRT_PRS.C : */
 extern void rprt_prs(PARMS *, int);
 
-/***********************************************************************/
-/* RUNMLP.C : Feedforward MLP Utilities */
-extern void mlphypscons(int, int, int, char, char, float *, float *,
-                        int, int *, float *);
 extern void runmlp(int, int, int, char, char, float *, float *, float *,
                    int *, float *);
 extern int runmlp2(const int, const int, const int,

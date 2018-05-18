@@ -67,23 +67,6 @@ of the software.
 #include <mlp.h>
 #include <mlpcla.h>
 
-/*************************************************************/
-void mlphypscons(int ninps, int nhids, int nouts, char acfunc_hids,
-                 char acfunc_outs, float *weights, float *klts,
-                 int nklts, int *hyps_i, float *cons)
-{
-   int i;
-   float *outacts, *kptr;
-
-   malloc_flt(&outacts, nouts, "mlphypscons : outacts");
-
-   for(i = 0, kptr = klts; i < nklts; i++, kptr += ninps){
-      runmlp(ninps, nhids, nouts, acfunc_hids, acfunc_outs, weights,
-             kptr, outacts, &(hyps_i[i]), &(cons[i]));
-   }
-
-   free(outacts);
-}
 
 /*************************************************************/
 /* runmlp: Runs the Multi-Layer Perceptron (MLP) on a feature vector.
